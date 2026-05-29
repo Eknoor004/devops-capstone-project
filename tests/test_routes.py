@@ -153,7 +153,7 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.get_json(), [])
     
-        def test_update_account(self):
+    def test_update_account(self):
         """It should Update an existing Account"""
         account = AccountFactory()
         response = self.client.post(BASE_URL, json=account.serialize())
