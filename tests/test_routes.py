@@ -86,6 +86,23 @@ class TestAccountService(TestCase):
         data = resp.get_json()
         self.assertEqual(data["status"], "OK")
 
+    def test_security_headers(self):
+        """It should return security headers"""
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("X-Frame-Options", response.headers)
+        self.assertIn("X-Content-Type-Options", response.headers)
+        self.assertIn("Content-Security-Policy", response.headers)
+
+    def test_cors_headers(self):
+        """It should return CORS headers"""
+        response = self.client.get(
+            "/",
+            headers={"Origin": "http://localhost"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Access-Control-Allow-Origin", response.headers)
+
     def test_create_account(self):
         """It should Create a new Account"""
         account = AccountFactory()
@@ -152,7 +169,7 @@ class TestAccountService(TestCase):
         response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.get_json(), [])
-    
+
     def test_update_account(self):
         """It should Update an existing Account"""
         account = AccountFactory()
