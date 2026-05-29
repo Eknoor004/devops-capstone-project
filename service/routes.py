@@ -17,6 +17,7 @@ def health():
     """Health Status"""
     return jsonify(dict(status="OK")), status.HTTP_200_OK
 
+
 ######################################################################
 # GET INDEX
 ######################################################################
@@ -30,6 +31,7 @@ def index():
         ),
         status.HTTP_200_OK,
     )
+
 
 ######################################################################
 # CREATE A NEW ACCOUNT
@@ -51,6 +53,7 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
@@ -60,6 +63,7 @@ def list_accounts():
     app.logger.info("Request to list Accounts")
     accounts = Account.all()
     return jsonify([account.serialize() for account in accounts]), status.HTTP_200_OK
+
 
 ######################################################################
 # READ AN ACCOUNT
@@ -72,6 +76,7 @@ def read_account(account_id):
     if not account:
         abort(status.HTTP_404_NOT_FOUND)
     return jsonify(account.serialize()), status.HTTP_200_OK
+
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
@@ -88,10 +93,10 @@ def update_account(account_id):
     account.update()
     return jsonify(account.serialize()), status.HTTP_200_OK
 
+
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
-
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_account(account_id):
     """Deletes an Account"""
@@ -100,6 +105,7 @@ def delete_account(account_id):
     if account:
         account.delete()
     return "", status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 # U T I L I T Y   F U N C T I O N S
